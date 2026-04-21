@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blood on the Clocktower — 2025/26 Player Stats</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0b08;
+    --parchment: #f5f0e8;
+    --parchment-dark: #ede5d0;
+    --parchment-mid: #f0ead8;
+    --blood: #8b1a1a;
+    --blood-light: #c0392b;
+    --blood-pale: #f5e6e6;
+    --gold: #c9933a;
+    --gold-light: #e8b84b;
+    --gold-pale: #fdf6e3;
+    --teal: #1a6b5a;
+    --teal-light: #27ae8a;
+    --teal-pale: #e8f5f0;
+    --stone: #7a6e5e;
+    --stone-light: #a89880;
+    --stone-pale: #f0ece4;
+    --midnight: #1c1a2e;
+    --midnight-mid: #2d2b45;
+    --shadow: rgba(14,11,8,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    background: var(--parchment);
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9933a' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+      linear-gradient(160deg, #f8f3ea 0%, #f0e8d5 50%, #ede4cc 100%);
+  }
+
+  /* HEADER */
+  header {
+    background: var(--midnight);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(139,26,26,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 50%, rgba(201,147,58,0.15) 0%, transparent 60%);
+  }
+  .header-inner {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 32px 40px;
+    text-align: center;
+  }
+  .header-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    opacity: 0.8;
+  }
+  .header-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 700;
+    color: var(--parchment);
+    line-height: 1.1;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 20px rgba(139,26,26,0.4);
+  }
+  .header-title span { color: var(--gold-light); }
+  .header-sub {
+    font-family: 'Crimson Pro', serif;
+    font-size: 17px;
+    color: var(--stone-light);
+    font-style: italic;
+    margin-bottom: 28px;
+  }
+  .header-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .hstat { text-align: center; }
+  .hstat-val {
+    font-family: 'Cinzel', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--gold-light);
+    display: block;
+  }
+  .hstat-lbl {
+    font-size: 12px;
+    color: var(--stone-light);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .divider-ornament {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    margin: 20px 0 0;
+    opacity: 0.3;
+  }
+  .divider-ornament::before, .divider-ornament::after {
+    content: '';
+    flex: 1;
+    max-width: 80px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .divider-ornament span { color: var(--gold); font-size: 18px; }
+
+  /* CONTROLS */
+  .controls {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 32px 0;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+  }
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--stone);
+    font-size: 14px;
+    pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    padding: 10px 14px 10px 36px;
+    border-radius: 6px;
+    border: 1.5px solid var(--parchment-dark);
+    background: rgba(255,255,255,0.7);
+    color: var(--ink);
+    font-family: 'Crimson Pro', serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,147,58,0.12);
+  }
+  .sort-group {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .sort-btn {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1.5px solid var(--parchment-dark);
+    background: rgba(255,255,255,0.5);
+    color: var(--stone);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .sort-btn:hover { border-color: var(--gold); color: var(--ink); }
+  .sort-btn.active {
+    background: var(--midnight);
+    border-color: var(--midnight);
+    color: var(--gold-light);
+  }
+  .filter-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--stone);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* GRID */
+  .grid-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 32px 60px;
+  }
+  .result-count {
+    font-family: 'Crimson Pro', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--stone);
+    margin-bottom: 16px;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  /* PLAYER CARD */
+  .pcard {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px var(--shadow), 0 1px 3px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    animation: cardIn 0.35s ease both;
+  }
+  .pcard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px var(--shadow), 0 2px 6px rgba(0,0,0,0.1);
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-banner {
+    height: 6px;
+  }
+  .banner-you { background: linear-gradient(90deg, #7F77DD, #c9933a, #1D9E75); }
+  .banner-gold { background: linear-gradient(90deg, #c9933a, #e8b84b); }
+  .banner-teal { background: #1a6b5a; }
+  .banner-blood { background: #8b1a1a; }
+  .banner-blue { background: #1a4a8b; }
+  .banner-purple { background: #4a2d8b; }
+  .banner-gray { background: #6b6055; }
+  .banner-pink { background: #8b2d5a; }
+
+  .card-head {
+    padding: 18px 20px 14px;
+    background: var(--midnight);
+    position: relative;
+  }
+  .card-head-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+  }
+  .player-name {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--parchment);
+    line-height: 1.2;
+  }
+  .you-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--midnight);
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-left: 8px;
+    vertical-align: middle;
+    text-transform: uppercase;
+  }
+  .player-meta {
+    font-size: 12px;
+    color: var(--stone-light);
+    font-style: italic;
+  }
+  .player-award {
+    font-size: 11px;
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+  .overall-wr {
+    font-family: 'Cinzel', serif;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .card-body { padding: 16px 20px 20px; }
+
+  /* STAT GRID 2x2 */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .stat-box {
+    background: var(--parchment-mid);
+    border-radius: 6px;
+    padding: 9px 12px;
+    border: 1px solid var(--parchment-dark);
+  }
+  .stat-box-label {
+    font-family: 'Cinzel', serif;
+    font-size: 8.5px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--stone);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .stat-box-val {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .stat-box-sub {
+    font-size: 11px;
+    color: var(--stone);
+    margin-top: 2px;
+    font-style: italic;
+  }
+
+  /* BARS */
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--stone);
+    text-transform: uppercase;
+    margin: 14px 0 7px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--parchment-dark);
+  }
+
+  .bar-rows { display: flex; flex-direction: column; gap: 5px; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .bar-lbl {
+    font-size: 11px;
+    color: var(--stone);
+    width: 86px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .bar-track {
+    flex: 1;
+    height: 7px;
+    background: var(--parchment-dark);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+  .bar-pct {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 600;
+    width: 34px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* PILLS */
+  .pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+  .pill {
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-size: 11px;
+    border: 1px solid;
+    font-style: italic;
+  }
+  .pill-good { background: var(--teal-pale); color: var(--teal); border-color: rgba(26,107,90,0.2); }
+  .pill-bad { background: var(--blood-pale); color: var(--blood); border-color: rgba(139,26,26,0.2); }
+  .pill-gold { background: var(--gold-pale); color: #7a5a1a; border-color: rgba(201,147,58,0.25); }
+  .pill-stone { background: var(--stone-pale); color: var(--stone); border-color: var(--parchment-dark); }
+
+  /* UNIQUE STAT */
+  .unique-stat-box {
+    background: var(--midnight);
+    border-radius: 7px;
+    padding: 10px 13px;
+    margin-top: 12px;
+  }
+  .unique-stat-lbl {
+    font-family: 'Cinzel', serif;
+    font-size: 8.5px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .unique-stat-text {
+    font-size: 12.5px;
+    color: var(--parchment);
+    line-height: 1.55;
+    font-style: italic;
+  }
+
+  /* ST BLOCK */
+  .st-block {
+    background: linear-gradient(135deg, rgba(127,119,221,0.1), rgba(201,147,58,0.08));
+    border: 1px solid rgba(127,119,221,0.25);
+    border-radius: 7px;
+    padding: 10px 13px;
+    margin-top: 8px;
+  }
+  .st-block-lbl {
+    font-family: 'Cinzel', serif;
+    font-size: 8.5px;
+    letter-spacing: 0.15em;
+    color: #7F77DD;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .st-block-val {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--ink);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--midnight);
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--stone-light);
+    font-style: italic;
+  }
+  footer span { color: var(--gold); }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--stone);
+    font-style: italic;
+    font-size: 18px;
+    grid-column: 1/-1;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .header-inner { padding: 32px 20px 28px; }
+    .header-stats { gap: 24px; }
+    .hstat-val { font-size: 22px; }
+    .controls { padding: 20px 16px 0; }
+    .grid-wrap { padding: 16px 16px 40px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .sort-group { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-eyebrow">2025 · 2026 School Year</div>
+    <div class="header-title">Blood on the <span>Clocktower</span></div>
+    <div class="header-sub">Player Statistics &amp; Year in Review</div>
+    <div class="header-stats">
+      <div class="hstat"><span class="hstat-val">79</span><span class="hstat-lbl">Games Played</span></div>
+      <div class="hstat"><span class="hstat-val">32</span><span class="hstat-lbl">Sessions</span></div>
+      <div class="hstat"><span class="hstat-val">57%</span><span class="hstat-lbl" style="color:#c0392b">Evil Win Rate</span></div>
+      <div class="hstat"><span class="hstat-val">39</span><span class="hstat-lbl">Unique Players</span></div>
+    </div>
+    <div class="divider-ornament"><span>✦</span></div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">⚔</span>
+    <input class="search-input" type="text" id="search" placeholder="Search by player name…" oninput="render()">
+  </div>
+  <span class="filter-label">Sort by</span>
+  <div class="sort-group" id="sort-group">
+    <button class="sort-btn active" onclick="setSort('games')">Games</button>
+    <button class="sort-btn" onclick="setSort('overall')">Win rate</button>
+    <button class="sort-btn" onclick="setSort('good')">Good %</button>
+    <button class="sort-btn" onclick="setSort('evil')">Evil %</button>
+    <button class="sort-btn" onclick="setSort('gap')">Gap</button>
+    <button class="sort-btn" onclick="setSort('surv')">Survival</button>
+    <button class="sort-btn" onclick="setSort('demon')">Demon</button>
+  </div>
+</div>
+
+<div class="grid-wrap">
+  <div class="result-count" id="result-count"></div>
+  <div class="cards-grid" id="grid"></div>
+</div>
+
+<footer>
+  Built with ♥ by <span>Lucas (3rd Year)</span> — Storyteller, Stats Keeper &amp; Town Architect &nbsp;·&nbsp; Nov 2025 – Apr 2026
+</footer>
+
+<script>
+const C = {
+  good: '#1a6b5a', good_pale: '#e8f5f0',
+  bad: '#8b1a1a', bad_pale: '#f5e6e6',
+  gold: '#8a5c10', gold_pale: '#fdf6e3',
+  mid: '#5a4a1a', mid_pale: '#fdf8e8',
+  stone: '#6b6055', stone_pale: '#f0ece4',
+  blue: '#1a3a8b', blue_pale: '#e8eef8',
+  purple: '#4a2d8b', purple_pale: '#f0eef8',
+};
+
+function pct(w, g) { return g ? Math.round(100 * w / g) : null; }
+function fmtPct(w, g) { const p = pct(w, g); return p === null ? '—' : p + '%'; }
+function barColor(v) {
+  if (v === null) return '#aaa';
+  if (v >= 65) return '#1a6b5a';
+  if (v >= 50) return '#1a4a8b';
+  if (v >= 35) return '#c9933a';
+  return '#8b1a1a';
+}
+function wrColor(v) {
+  if (v === null) return C.stone;
+  if (v >= 65) return C.good;
+  if (v >= 50) return C.blue;
+  if (v >= 35) return C.gold;
+  return C.bad;
+}
+
+const PLAYERS = [
+  { name:'Jason', you:false, banner:'banner-gold', games:68, wins:35, losses:33, good_g:48,good_w:23, evil_g:20,evil_w:12, demon_g:7,demon_w:6, minion_g:11,minion_w:5, tf_g:41,tf_w:19, out_g:7,out_w:5, trav_g:2,trav_w:0, alive:31,total_eog:65, alive_good:19,alive_good_w:14, dead_good:27,dead_good_w:8, alive_evil:12,alive_evil_w:9, dead_evil:7,dead_evil_w:3, small_g:20,small_w:12, mid_g:33,mid_w:18, large_g:15,large_w:5, win_streak:7, loss_streak:6, roles:49, scripts:21, won_other:1, top_role:'Assassin (3 plays, 33%)', best_script:'Midnight Oasis (100%, 2g)', worst_script:'Two Truths (0%, 2g)', unique:'As Outsider: 71% win rate — well above their overall average. Jason is notably more effective in non-standard Good roles than as a conventional Townsfolk.', award:'👑 Most Dedicated Player' },
+  { name:'Makenna', you:false, banner:'banner-blue', games:67, wins:33, losses:34, good_g:43,good_w:19, evil_g:24,evil_w:14, demon_g:7,demon_w:4, minion_g:16,minion_w:11, tf_g:34,tf_w:12, out_g:8,out_w:5, trav_g:2,trav_w:1, alive:27,total_eog:66, alive_good:16,alive_good_w:10, dead_good:26,dead_good_w:8, alive_evil:11,alive_evil_w:8, dead_evil:13,dead_evil_w:6, small_g:23,small_w:16, mid_g:28,mid_w:12, large_g:16,large_w:5, win_streak:5, loss_streak:4, roles:45, scripts:20, won_other:0, top_role:'Evil Twin (3 plays, 67%)', best_script:'Hide & Seek (100%, 3g)', worst_script:'Extension Cord (0%, 2g)', unique:'Small game specialist: 70% in ≤9 player games vs 31% in large — the biggest small/large performance gap of any regular. Keep Makenna at a small table.', award:'📐 Always Present' },
+  { name:'Carter', you:false, banner:'banner-blood', games:66, wins:28, losses:38, good_g:46,good_w:17, evil_g:20,evil_w:11, demon_g:9,demon_w:2, minion_g:9,minion_w:7, tf_g:38,tf_w:14, out_g:9,out_w:4, trav_g:1,trav_w:1, alive:22,total_eog:63, alive_good:14,alive_good_w:10, dead_good:31,dead_good_w:7, alive_evil:8,alive_evil_w:6, dead_evil:10,dead_evil_w:5, small_g:23,small_w:11, mid_g:27,mid_w:11, large_g:16,large_w:6, win_streak:7, loss_streak:7, roles:53, scripts:22, won_other:0, top_role:'Pit-Hag (4 plays, 75%)', best_script:'Whale Bucket (86%, 7g)', worst_script:'Two Truths (0%, 2g)', unique:'Whale Bucket anomaly: 86% win rate in 7 games — their best script by far, yet 22% as Demon overall. Carter thrives in Whale Bucket specifically and excels as Minion (78%) rather than Demon.', award:'🎭 The Chameleon' },
+  { name:'Oliver', you:false, banner:'banner-gold', games:64, wins:40, losses:24, good_g:40,good_w:22, evil_g:24,evil_w:18, demon_g:6,demon_w:5, minion_g:14,minion_w:9, tf_g:37,tf_w:21, out_g:6,out_w:5, trav_g:1,trav_w:0, alive:29,total_eog:63, alive_good:14,alive_good_w:10, dead_good:25,dead_good_w:11, alive_evil:15,alive_evil_w:13, dead_evil:9,dead_evil_w:5, small_g:24,small_w:15, mid_g:27,mid_w:18, large_g:13,large_w:7, win_streak:7, loss_streak:3, roles:52, scripts:24, won_other:1, top_role:'Slayer (2 plays, 100%)', best_script:'Hide & Seek (100%, 3g)', worst_script:'Everyone (0%, 2g)', unique:'Alive + Evil win rate: 87% — the highest of any player in any alive/team combination in the dataset. When Oliver is alive and on Evil at EOG, Evil almost never loses.', award:'🧠 Mastermind' },
+  { name:'Emerson', you:false, banner:'banner-blue', games:60, wins:34, losses:26, good_g:42,good_w:22, evil_g:18,evil_w:12, demon_g:4,demon_w:2, minion_g:12,minion_w:9, tf_g:37,tf_w:20, out_g:6,out_w:3, trav_g:1,trav_w:0, alive:26,total_eog:58, alive_good:21,alive_good_w:17, dead_good:20,dead_good_w:5, alive_evil:5,alive_evil_w:3, dead_evil:12,dead_evil_w:9, small_g:18,small_w:8, mid_g:27,mid_w:19, large_g:15,large_w:7, win_streak:6, loss_streak:5, roles:49, scripts:17, won_other:3, top_role:'Seamstress (3 plays, 67%)', best_script:'Midnight Oasis (100%, 2g)', worst_script:'Two Truths (0%, 2g)', unique:'Dead Evil wins 75% — Emerson wins as Evil more often after dying than while alive (60%). Evil value persists through death, likely via Minion abilities that activate on death.', award:'📊 Most Consistent' },
+  { name:'Kierston', you:false, banner:'banner-purple', games:60, wins:26, losses:34, good_g:42,good_w:17, evil_g:18,evil_w:9, demon_g:6,demon_w:4, minion_g:13,minion_w:6, tf_g:32,tf_w:14, out_g:9,out_w:2, trav_g:0,trav_w:0, alive:25,total_eog:58, alive_good:18,alive_good_w:13, dead_good:22,dead_good_w:3, alive_evil:7,alive_evil_w:4, dead_evil:11,dead_evil_w:5, small_g:19,small_w:11, mid_g:28,mid_w:11, large_g:13,large_w:4, win_streak:4, loss_streak:8, roles:46, scripts:24, won_other:1, top_role:'Sailor (3 plays, 33%)', best_script:'Midnight Oasis (100%, 2g)', worst_script:'All My Favorite Things (0%, 2g)', unique:'Outsider curse: only 22% win rate across 9 Outsider games — the lowest Outsider record of any regular. Kierston assigned as Outsider is almost a structural loss for their team.', award:'🪦 Cursed Townsfolk' },
+  { name:'Lucas', you:false, banner:'banner-gray', games:58, wins:25, losses:33, good_g:39,good_w:16, evil_g:19,evil_w:9, demon_g:8,demon_w:3, minion_g:9,minion_w:5, tf_g:39,tf_w:17, out_g:2,out_w:0, trav_g:0,trav_w:0, alive:28,total_eog:56, alive_good:17,alive_good_w:14, dead_good:20,dead_good_w:2, alive_evil:11,alive_evil_w:7, dead_evil:8,dead_evil_w:2, small_g:18,small_w:9, mid_g:25,mid_w:13, large_g:15,large_w:3, win_streak:3, loss_streak:8, roles:45, scripts:21, won_other:0, top_role:'Artist (3 plays, 67%)', best_script:'Whale Bucket (75%, 8g)', worst_script:'Two Truths (0%, 2g)', unique:'Dead Good win rate: 10% (2/20) — the lowest in the group by far. When Lucas dies as a Good player, the town loses 90% of the time. Lucas alive is effectively the team still standing.', award:'🎲 The Wildcard' },
+  { name:'Jean', you:false, banner:'banner-purple', games:55, wins:21, losses:34, good_g:37,good_w:11, evil_g:18,evil_w:10, demon_g:5,demon_w:4, minion_g:13,minion_w:6, tf_g:35,tf_w:10, out_g:1,out_w:1, trav_g:1,trav_w:0, alive:24,total_eog:53, alive_good:16,alive_good_w:8, dead_good:20,dead_good_w:3, alive_evil:8,alive_evil_w:5, dead_evil:9,dead_evil_w:5, small_g:19,small_w:6, mid_g:25,mid_w:12, large_g:11,large_w:3, win_streak:4, loss_streak:5, roles:43, scripts:23, won_other:2, top_role:'Clockmaker (3 plays, 0%)', best_script:'All My Favorites (50%, 2g)', worst_script:'Night Terrors (0%, 3g)', unique:'Townsfolk win rate: 29% (10/35) — the lowest of any regular. Jean playing a town role is almost a structural disadvantage. Night Terrors: 0% in 3 appearances — Jean\'s personal curse script.', award:'🕯️ Town\'s Burden' },
+  { name:'Juan', you:false, banner:'banner-teal', games:47, wins:24, losses:23, good_g:33,good_w:16, evil_g:14,evil_w:8, demon_g:2,demon_w:1, minion_g:9,minion_w:4, tf_g:26,tf_w:15, out_g:4,out_w:1, trav_g:6,trav_w:3, alive:19,total_eog:47, alive_good:14,alive_good_w:9, dead_good:19,dead_good_w:7, alive_evil:5,alive_evil_w:2, dead_evil:9,dead_evil_w:6, small_g:14,small_w:9, mid_g:23,mid_w:10, large_g:10,large_w:5, win_streak:5, loss_streak:7, roles:34, scripts:18, won_other:1, top_role:'Gossip (3 plays, 100%)', best_script:'All My Favorites (100%, 2g)', worst_script:'Chaos Incarnate (0%, 2g)', unique:'100% Gossip win rate across 3 plays. Dead Evil win rate 67% vs alive Evil 40% — Juan as dead Evil wins more than alive Evil. Traveler record: 50% across 6 games — solid utility.', award:'⚖️ The Balanced One' },
+  { name:'Ash', you:false, banner:'banner-blood', games:47, wins:25, losses:22, good_g:35,good_w:15, evil_g:12,evil_w:10, demon_g:6,demon_w:5, minion_g:3,minion_w:3, tf_g:32,tf_w:13, out_g:5,out_w:3, trav_g:1,trav_w:1, alive:21,total_eog:45, alive_good:14,alive_good_w:8, dead_good:19,dead_good_w:5, alive_evil:7,alive_evil_w:6, dead_evil:5,dead_evil_w:4, small_g:16,small_w:10, mid_g:19,mid_w:12, large_g:12,large_w:3, win_streak:8, loss_streak:3, roles:45, scripts:18, won_other:3, top_role:'Gambler (2 plays, 50%)', best_script:'Passage of Time (100%, 2g)', worst_script:'Chaos Incarnate (33%, 3g)', unique:'Large game collapse: 62-63% in small/mid → only 25% in games with 12+ players. Ash\'s Evil dominance (83%) is almost entirely a small-game phenomenon. In large games, Ash is average.', award:'😈 Born to Lie' },
+  { name:'Graham', you:false, banner:'banner-teal', games:34, wins:20, losses:14, good_g:21,good_w:11, evil_g:13,evil_w:9, demon_g:3,demon_w:3, minion_g:10,minion_w:6, tf_g:20,tf_w:10, out_g:1,out_w:1, trav_g:0,trav_w:0, alive:20,total_eog:33, alive_good:11,alive_good_w:9, dead_good:9,dead_good_w:2, alive_evil:9,alive_evil_w:7, dead_evil:4,dead_evil_w:2, small_g:6,small_w:2, mid_g:17,mid_w:9, large_g:11,large_w:9, win_streak:7, loss_streak:5, roles:29, scripts:15, won_other:1, top_role:'Oracle (2 plays, 0%)', best_script:'Chaos Incarnate (100%, 2g)', worst_script:'Hide & Seek (33%, 3g)', unique:'Large game specialist: 82% win rate in 12+ player games — the best large-game record in the group. Where most players collapse at scale, Graham thrives. The reverse of almost everyone else.', award:'🛡️ Last One Standing' },
+  { name:'Icarus', you:false, banner:'banner-blue', games:30, wins:14, losses:16, good_g:22,good_w:10, evil_g:8,evil_w:4, demon_g:4,demon_w:2, minion_g:4,minion_w:2, tf_g:21,tf_w:9, out_g:1,out_w:1, trav_g:0,trav_w:0, alive:15,total_eog:30, alive_good:11,alive_good_w:8, dead_good:11,dead_good_w:2, alive_evil:4,alive_evil_w:3, dead_evil:4,dead_evil_w:1, small_g:12,small_w:9, mid_g:11,mid_w:3, large_g:7,large_w:2, win_streak:6, loss_streak:7, roles:26, scripts:11, won_other:1, top_role:'Artist (3 plays, 67%)', best_script:'TB (100%, 2g)', worst_script:'Chaos Incarnate (0%, 2g)', unique:'Small game star: 75% win rate in ≤9 player games — the highest small-game rate of any regular. Drops to 27% in mid-size and 29% in large. Icarus is definitively a small-table player.', award:'🌡️ Hot and Cold' },
+  { name:'Chris', you:false, banner:'banner-teal', games:28, wins:14, losses:14, good_g:24,good_w:11, evil_g:4,evil_w:3, demon_g:3,demon_w:3, minion_g:1,minion_w:0, tf_g:19,tf_w:8, out_g:4,out_w:2, trav_g:1,trav_w:1, alive:12,total_eog:27, alive_good:8,alive_good_w:7, dead_good:15,dead_good_w:3, alive_evil:4,alive_evil_w:3, dead_evil:0,dead_evil_w:0, small_g:9,small_w:4, mid_g:9,mid_w:4, large_g:10,large_w:6, win_streak:4, loss_streak:3, roles:22, scripts:13, won_other:0, top_role:'Empath (3 plays, 67%)', best_script:'Two Truths (100%, 2g)', worst_script:'Whale Bucket (25%, 4g)', unique:'Alive Good win rate: 88% (7/8) — the highest in the entire group. When Chris is alive as Good at end of game, Good wins almost every time. Chris staying alive is the group\'s clearest win predictor.', award:'🎯 Alive Means Winning' },
+  { name:'Ethan', you:false, banner:'banner-pink', games:26, wins:12, losses:14, good_g:22,good_w:9, evil_g:4,evil_w:3, demon_g:1,demon_w:0, minion_g:2,minion_w:2, tf_g:19,tf_w:9, out_g:2,out_w:0, trav_g:2,trav_w:1, alive:6,total_eog:25, alive_good:5,alive_good_w:4, dead_good:17,dead_good_w:5, alive_evil:1,alive_evil_w:1, dead_evil:2,dead_evil_w:1, small_g:6,small_w:3, mid_g:12,mid_w:7, large_g:8,large_w:2, win_streak:3, loss_streak:5, roles:22, scripts:11, won_other:0, top_role:'Chef (2 plays, 50%)', best_script:'BMR (50%, 4g)', worst_script:'TB (33%, 3g)', unique:'Dies in 17 of 25 tracked games as Good — by far the most death-prone regular. Yet Minion record is perfect (2/2) and Outsider record is 0% (0/2). Ethan\'s fate depends entirely on which role they\'re given.', award:'⚰️ Eternal Sacrifice' },
+  { name:'Lucas (3rd Year)', you:true, banner:'banner-you', games:24, wins:13, losses:11, good_g:15,good_w:7, evil_g:9,evil_w:6, demon_g:3,demon_w:1, minion_g:3,minion_w:3, tf_g:10,tf_w:7, out_g:4,out_w:1, trav_g:4,trav_w:1, alive:7,total_eog:24, alive_good:6,alive_good_w:2, dead_good:9,dead_good_w:5, alive_evil:1,alive_evil_w:1, dead_evil:8,dead_evil_w:5, small_g:9,small_w:4, mid_g:9,mid_w:6, large_g:6,large_w:3, win_streak:4, loss_streak:4, roles:20, scripts:9, won_other:1, top_role:'Imp (2 plays, 50%)', best_script:'TB (80%, 5g)', worst_script:'BMR (25%, 4g)', unique:'The only regular whose dead Good win rate (56%) exceeds alive Good win rate (33%). Also: perfect 3/3 Minion record. Storytold 52 of 79 games (44% Good win rate) — the entire year runs through this player.', award:'🏗️ The Architect', st_games:52, st_good:23 },
+  { name:'Steven', you:false, banner:'banner-teal', games:23, wins:11, losses:12, good_g:19,good_w:9, evil_g:4,evil_w:2, demon_g:2,demon_w:1, minion_g:2,minion_w:1, tf_g:11,tf_w:8, out_g:6,out_w:1, trav_g:2,trav_w:0, alive:12,total_eog:22, alive_good:10,alive_good_w:7, dead_good:8,dead_good_w:1, alive_evil:2,alive_evil_w:1, dead_evil:2,dead_evil_w:1, small_g:10,small_w:5, mid_g:11,mid_w:6, large_g:2,large_w:0, win_streak:3, loss_streak:3, roles:22, scripts:10, won_other:0, top_role:'Damsel (2 plays, 50%)', best_script:'BMR (67%, 3g)', worst_script:'TB (33%, 3g)', unique:'Townsfolk win rate: 73% (8/11) — one of the best in the group. But Outsider win rate: 17% (1/6) — one of the worst. Steven is a quintessential Townsfolk player who struggles badly in Outsider roles.', award:'🌱 Rising Star' },
+];
+
+let currentSort = 'games';
+
+function setSort(s) {
+  currentSort = s;
+  document.querySelectorAll('.sort-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['games','overall','good','evil','gap','surv','demon'][i] === s);
+  });
+  render();
+}
+
+function sortVal(p) {
+  const f = (w, g) => g ? w / g : -1;
+  if (currentSort === 'games') return p.games;
+  if (currentSort === 'overall') return f(p.wins, p.games);
+  if (currentSort === 'good') return f(p.good_w, p.good_g);
+  if (currentSort === 'evil') return f(p.evil_w, p.evil_g);
+  if (currentSort === 'gap') return f(p.evil_w, p.evil_g) - f(p.good_w, p.good_g);
+  if (currentSort === 'surv') return f(p.alive, p.total_eog);
+  if (currentSort === 'demon') return f(p.demon_w, p.demon_g);
+  return 0;
+}
+
+function bar(label, w, g) {
+  const v = pct(w, g);
+  const fill = v === null ? 0 : v;
+  const col = barColor(v);
+  const txt = v === null ? '—' : v + '%';
+  return `<div class="bar-row">
+    <div class="bar-lbl">${label}</div>
+    <div class="bar-track"><div class="bar-fill" style="width:${fill}%;background:${col}"></div></div>
+    <div class="bar-pct" style="color:${col}">${txt}</div>
+  </div>`;
+}
+
+function card(p, delay) {
+  const owr = pct(p.wins, p.games);
+  const gwr = pct(p.good_w, p.good_g);
+  const ewr = pct(p.evil_w, p.evil_g);
+  const gap = (ewr || 0) - (gwr || 0);
+  const surv = pct(p.alive, p.total_eog);
+  const dwr = pct(p.demon_w, p.demon_g);
+  const mwr = pct(p.minion_w, p.minion_g);
+
+  const stBlock = p.you && p.st_games ? `
+    <div class="st-block">
+      <div class="st-block-lbl">Storyteller Record</div>
+      <div class="st-block-val">${p.st_games} games run &nbsp;·&nbsp; Good wins ${p.st_good}/${p.st_games} (${Math.round(100*p.st_good/p.st_games)}%)</div>
+    </div>` : '';
+
+  const travRow = p.trav_g > 0 ? bar('Traveler', p.trav_w, p.trav_g) : '';
+
+  return `<div class="pcard" style="animation-delay:${delay}ms">
+    <div class="card-banner ${p.banner}"></div>
+    <div class="card-head">
+      <div class="card-head-top">
+        <div>
+          <div class="player-name">${p.name}${p.you ? '<span class="you-badge">Host</span>' : ''}</div>
+          <div class="player-meta">${p.games} games &nbsp;·&nbsp; ${p.wins}W / ${p.losses}L</div>
+          <div class="player-award">${p.award}</div>
+        </div>
+        <div class="overall-wr" style="color:${wrColor(owr)}">${owr}%</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-box-label">As Good</div>
+          <div class="stat-box-val" style="color:${wrColor(gwr)}">${gwr}%</div>
+          <div class="stat-box-sub">${p.good_w}/${p.good_g} games</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">As Evil</div>
+          <div class="stat-box-val" style="color:${wrColor(ewr)}">${ewr}%</div>
+          <div class="stat-box-sub">${p.evil_w}/${p.evil_g} &nbsp;·&nbsp; gap ${gap>0?'+':''}${gap}pt</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Demon</div>
+          <div class="stat-box-val" style="color:${wrColor(dwr)}">${dwr !== null ? dwr+'%' : '—'}</div>
+          <div class="stat-box-sub">${p.demon_w}/${p.demon_g} games</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Minion</div>
+          <div class="stat-box-val" style="color:${wrColor(mwr)}">${mwr !== null ? mwr+'%' : '—'}</div>
+          <div class="stat-box-sub">${p.minion_w}/${p.minion_g} games</div>
+        </div>
+      </div>
+
+      <div class="section-title">By Role Type</div>
+      <div class="bar-rows">
+        ${bar('Townsfolk', p.tf_w, p.tf_g)}
+        ${bar('Outsider', p.out_w, p.out_g)}
+        ${travRow}
+      </div>
+
+      <div class="section-title">Survival Outcomes</div>
+      <div class="bar-rows">
+        ${bar('Alive + Good', p.alive_good_w, p.alive_good)}
+        ${bar('Dead + Good', p.dead_good_w, p.dead_good)}
+        ${bar('Alive + Evil', p.alive_evil_w, p.alive_evil)}
+        ${bar('Dead + Evil', p.dead_evil_w, p.dead_evil)}
+      </div>
+
+      <div class="section-title">By Game Size</div>
+      <div class="bar-rows">
+        ${bar('Small (≤9)', p.small_w, p.small_g)}
+        ${bar('Mid (10–11)', p.mid_w, p.mid_g)}
+        ${bar('Large (≥12)', p.large_w, p.large_g)}
+      </div>
+
+      <div class="pills">
+        <span class="pill pill-stone">🔥 Streak: ${p.win_streak}W / ${p.loss_streak}L</span>
+        <span class="pill pill-stone">🎭 ${p.roles} roles</span>
+        <span class="pill pill-stone">📜 ${p.scripts} scripts</span>
+        ${p.won_other > 0 ? `<span class="pill pill-gold">Won on losing team: ${p.won_other}×</span>` : ''}
+        <span class="pill pill-good">Best: ${p.best_script}</span>
+        <span class="pill pill-bad">Worst: ${p.worst_script}</span>
+        <span class="pill pill-stone">Top role: ${p.top_role}</span>
+      </div>
+
+      <div class="unique-stat-box">
+        <div class="unique-stat-lbl">✦ Unique Stat</div>
+        <div class="unique-stat-text">${p.unique}</div>
+      </div>
+
+      ${stBlock}
+    </div>
+  </div>`;
+}
+
+function render() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const filtered = PLAYERS
+    .filter(p => !q || p.name.toLowerCase().includes(q))
+    .sort((a, b) => sortVal(b) - sortVal(a));
+
+  document.getElementById('result-count').textContent =
+    filtered.length === PLAYERS.length
+      ? `Showing all ${PLAYERS.length} core players`
+      : `Showing ${filtered.length} of ${PLAYERS.length} players`;
+
+  document.getElementById('grid').innerHTML = filtered.length
+    ? filtered.map((p, i) => card(p, i * 40)).join('')
+    : '<div class="empty">No players found matching that name.</div>';
+}
+
+render();
+</script>
+</body>
+</html>
