@@ -5,8 +5,8 @@
       /* exported handleSignoutClick */
 
       
-      const API_KEY = '123';
-      const ID = '123';
+      const API_KEY = '1234';
+      const ID = '1234';
       const SHEET_NAME = 'Input';
 
     async function getData() {
