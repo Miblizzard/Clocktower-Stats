@@ -5,9 +5,9 @@
       /* exported handleSignoutClick */
 
       
-      const API_KEY = '';
-      const ID = '';
-      const SHEET_NAME = '';
+      const API_KEY = '123';
+      const ID = '123';
+      const SHEET_NAME = 'Input';
 
     async function getData() {
         const url = "https://sheets.googleapis.com/v4/spreadsheets/" + ID + "/values/" + SHEET_NAME + "?key=" + API_KEY;
@@ -17,7 +17,7 @@
                 throw new Error(`Response status: ${response.status}`);
             }
 
-            return result = await response.json(); // turns the fetched response into a json structure
+            return await response.json(); // turns the fetched response into a json structure
             
         } catch (error) {
             console.error(error.message);
