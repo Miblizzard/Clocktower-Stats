@@ -47,8 +47,10 @@
         public $color;
         public $games_won = 0;
         public $good_won = 0;
-        public $hws = 0; // want to make it an associative array that holds the number and the date it was acheived
+        public $hws = 0;
+        public $hws_date;
         public $hls = 0;
+        public $hls_date;
         public $evil_won = 0;
         public $win_streak = 0;
         public $loss_streak = 0;
@@ -75,17 +77,19 @@
             $this->name = $name;
         }
 
-        public function set_highest_win_streak($streak){
+        public function set_highest_win_streak($streak, $date){
             
             if($this->hws < $streak){
                 $this->hws = $streak;
+                $this->hws_date = $date;
             }
 
         }
 
-        public function set_highest_loss_streak($streak){
+        public function set_highest_loss_streak($streak, $date){
             if($this->hls < $streak){
                 $this->hls = $streak;
+                $this->hls_date = $date;
             }
         }
 
@@ -427,26 +431,26 @@
                             if($won){ // if that player won then add to their wins
                                 $card->loss_streak = 0;
                                 $card->win_streak++;
-                                $card->set_highest_win_streak($card->win_streak);
+                                $card->set_highest_win_streak($card->win_streak, $date);
 
                                 $card->add_good_won();
                             }else{
                                 $card->win_streak = 0;
                                 $card->loss_streak++;
-                                $card->set_highest_loss_streak($card->loss_streak);
+                                $card->set_highest_loss_streak($card->loss_streak, $date);
                             }
                         }else{
                             $card->add_evil();
                             if($won){ // if that player won add to wins
                                 $card->loss_streak = 0; // reset loss streak
                                 $card->win_streak++; // increase win streak
-                                $card->set_highest_win_streak($card->win_streak); // see if win_streak is highest
+                                $card->set_highest_win_streak($card->win_streak, $date); // see if win_streak is highest
 
                                 $card->add_evil_won();
                             }else{
                                 $card->win_streak = 0; // reset win streak
                                 $card->loss_streak++; // increase loss streak
-                                $card->set_highest_loss_streak($card->loss_streak); // see if loss_streak is highest
+                                $card->set_highest_loss_streak($card->loss_streak, $date); // see if loss_streak is highest
                             }
                         }
                         
@@ -465,26 +469,26 @@
                             if($won){
                                 $new_card->loss_streak = 0;
                                 $new_card->win_streak++;
-                                $new_card->set_highest_win_streak($new_card->win_streak);
+                                $new_card->set_highest_win_streak($new_card->win_streak, $date);
 
                                 $new_card->add_good_won();
                             }else{
                                 $new_card->win_streak = 0;
                                 $new_card->loss_streak++;
-                                $new_card->set_highest_loss_streak($new_card->loss_streak);
+                                $new_card->set_highest_loss_streak($new_card->loss_streak, $date);
                             }
                         }else{
                             $new_card->add_evil();
                             if($won){
                                 $new_card->loss_streak = 0;
                                 $new_card->win_streak++;
-                                $new_card->set_highest_win_streak($new_card->win_streak);
+                                $new_card->set_highest_win_streak($new_card->win_streak, $date);
 
                                 $new_card->add_evil_won();
                             }else{
                                 $new_card->win_streak = 0;
                                 $new_card->loss_streak++;
-                                $new_card->set_highest_loss_streak($new_card->loss_streak);
+                                $new_card->set_highest_loss_streak($new_card->loss_streak, $date);
                             }
                         }
                         

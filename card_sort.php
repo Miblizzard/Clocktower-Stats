@@ -181,8 +181,8 @@ function show_full_card($card){
       <div class="mbox"><div class="mbox-l">As Evil</div><div class="mbox-v" style="color:'. choose_color('evil') .'">'. $percent_evil .'%</div><div class="mbox-s">'. $card->evil_won .'/'. $card->evil_games .' games</div></div>
       <div class="mbox"><div class="mbox-l">Demon</div><div class="mbox-v" style="color:'. choose_color('demon') .'">'. $demons .'%</div><div class="mbox-s">'. $won_by_role[3] .'/'. $played_by_role[3] .' games</div></div>
       <div class="mbox"><div class="mbox-l">Minion</div><div class="mbox-v" style="color:'. choose_color('minion') .'">'. $minions .'%</div><div class="mbox-s">'. $won_by_role[4] .'/'. $played_by_role[4] .' games</div></div>
-      <div class="mbox"><div class="mbox-l">Best Win Streak</div><div class="mbox-v" style="color:#c9933a">'. $card->hws .'</div><div class="mbox-s">consecutive wins</div></div>
-      <div class="mbox"><div class="mbox-l">Worst Loss Streak</div><div class="mbox-v" style="color:#8b1a1a">'. $card->hls .'</div><div class="mbox-s">consecutive losses</div></div>
+      <div class="mbox"><div class="mbox-l">Best Win Streak</div><div class="mbox-v" style="color:#c9933a">'. $card->hws .'</div><div class="mbox-s">consecutive wins achieved on: '. $card->hws_date .'</div></div>
+      <div class="mbox"><div class="mbox-l">Worst Loss Streak</div><div class="mbox-v" style="color:#8b1a1a">'. $card->hls .'</div><div class="mbox-s">consecutive losses achieved on: '. $card->hls_date .'</div></div>
     </div>
 
     <div class="msec">Win % By Role Type</div>
