@@ -47,7 +47,7 @@
         public $color;
         public $games_won = 0;
         public $good_won = 0;
-        public $hws = 0;
+        public $hws = 0; // want to make it an associative array that holds the number and the date it was acheived
         public $hls = 0;
         public $evil_won = 0;
         public $win_streak = 0;

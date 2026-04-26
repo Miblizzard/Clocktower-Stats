@@ -7,7 +7,7 @@
         if($string == null){
             $var_to_card = [];
             foreach($array as $index => $card){ // need variables games_played, percent_games_won(), good_won / good_games, evil_won / evil_games, survived, dont know how to get demon_won and demon_played in O(1) time
-                $var = $card->games_played;
+                
                 switch($sort_type){
                     case 'games': 
                         $var = $card->games_played;
@@ -31,8 +31,13 @@
                         $var = $card->games_played;
                         break;
                 }
-
-                $var_to_card[$var] = $card; // creates an associative array with the specified variable to the card 
+                
+                if(isset($var_to_card[$var])) { // if there is already a player with that same number then increase the number by one and add them in
+                    $var_to_card[$var+1] = $card;
+                }else{
+                    $var_to_card[$var] = $card; // creates an associative array with the specified variable to the card
+                } 
+                
             }   
         }else{ //if the string in the searchbar is not null will need to check if any part of the given string matches 
             $var_to_card = [];
@@ -63,7 +68,11 @@
                             break;
                     }
 
-                    $var_to_card[$var] = $card; // creates an associative array with the specified variable to the card
+                    if(isset($var_to_card[$var])) { // if there is already a player with that same number then increase the number by one and add them in
+                        $var_to_card[$var+1] = $card;
+                    }else{
+                        $var_to_card[$var] = $card; // creates an associative array with the specified variable to the card
+                    } 
                 }
             }
 
@@ -71,7 +80,11 @@
 
         if($var_to_card == null) return null;
 
+        
+
         krsort($var_to_card); // sorts the array of variables by their keys which is the specified variable
+
+        
 
         return $var_to_card;
     }
