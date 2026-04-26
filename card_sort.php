@@ -152,7 +152,7 @@ function show_full_card($card){
     <div class="mbox" style="background:linear-gradient(135deg,rgba(127,119,221,.08),rgba(201,147,58,.06));border-color:rgba(127,119,221,.3)">
       <div class="mbox-l" style="color:#7F77DD">Games Run as Storyteller</div>
       <div class="mbox-v" style="font-size:18px">'. $card->storyteller_games .' games — <span style="color:#1a4a8b">'. $storyteller_pct .'% Good win rate</span></div>
-      <div class="mbox-s">'. $good_won .' Good wins / '. $evil_won .' Evil wins across the year · '. $card->storyteller_games / $GLOBALS['num_games'] .'% of all games run by you</div>
+      <div class="mbox-s">'. $good_won .' Good wins / '. $evil_won .' Evil wins across the year · '. number_format(($card->storyteller_games / $GLOBALS['num_games'])*100, 0) .'% of all games run by you</div>
     </div>': '';
 
   //var_dump($card);
@@ -161,7 +161,7 @@ function show_full_card($card){
     
     <div class="m2col">
        <div class="mbox"><div class="mbox-l">Overall Win Rate</div><div class="mbox-v" style="color:'. choose_color($card->color) .'">'. number_format($card->percent_games_won(), 0) .'%</div><div class="mbox-s">'. $card->games_won .'W / '. ($card->games_played - $card->games_won) .'L from '. $card->games_played .' games</div></div>
-       <div class="mbox"><div class="mbox-l">Survival Rate</div><div class="mbox-v" style="color:'. choose_color('good') .'">'. ($good + $evil) .'%</div><div class="mbox-s">'. $survival[0] .' alive at EOG / '. ($card->evil_games+$card->good_games) .' tracked</div></div>
+       <div class="mbox"><div class="mbox-l">Survival Rate</div><div class="mbox-v" style="color:'. choose_color('good') .'">'. ($good + $evil) .'%</div><div class="mbox-s">'. ($survival[0] + $survival[1]) .' alive at EOG / '. ($card->evil_games+$card->good_games) .' tracked</div></div>
        <div class="mbox"><div class="mbox-l">As Good</div><div class="mbox-v" style="color:'. choose_color('good') .'">'. $percent_good .'%</div><div class="mbox-s">'. $card->good_won .'/'. $card->good_games .' games</div></div>
       <div class="mbox"><div class="mbox-l">As Evil</div><div class="mbox-v" style="color:'. choose_color('evil') .'">'. $percent_evil .'%</div><div class="mbox-s">'. $card->evil_won .'/'. $card->evil_games .' games</div></div>
       <div class="mbox"><div class="mbox-l">Demon</div><div class="mbox-v" style="color:'. choose_color('demon') .'">'. $demons .'%</div><div class="mbox-s">'. $won_by_role[3] .'/'. $played_by_role[3] .' games</div></div>
@@ -170,7 +170,7 @@ function show_full_card($card){
       <div class="mbox"><div class="mbox-l">Worst Loss Streak</div><div class="mbox-v" style="color:#8b1a1a">'. $card->hls .'</div><div class="mbox-s">consecutive losses</div></div>
     </div>
 
-    <div class="msec">By Role Type</div>
+    <div class="msec">Win % By Role Type</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <div>'. mbar('Townsfolk', choose_color('good'), $towns).''. mbar('Outsider',choose_color('b-blue'), $outsiders).''. ($travelers == 0? mbar('Traveler',choose_color('b-grey'), $travelers):'') .'</div>
       <div>'. mbar('Demon', choose_color('demon'), $demons).''. mbar('Minion', choose_color('minion'), $minions) .'</div>
@@ -220,7 +220,7 @@ function history($card){
         $this_player = $game->player[$card->name];
         $isWin = $this_player->team_won ? 'Win' : 'Loss';
         $isgood = $this_player->isgood ? 'Good' : 'Evil';
-        $dot_color = ($isgood == 'Good' && $isWin == 'Win')? '#1a6b5a' : (($isgood == 'Evil' && $isWin == 'Win')? '#8b1a1a' : '#7a6e5e');
+        $dot_color = ($isgood == 'Good')? '#1a6b5a' :  '#8b1a1a';
         $result_col = $isWin == 'Win'?($isgood == 'Good'?'#1a6b5a':'#8b1a1a'):'#7a6e5e';
         $alive = ($this_player->isalive) ? '● ':'○ ';
 

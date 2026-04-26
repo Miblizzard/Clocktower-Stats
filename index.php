@@ -62,7 +62,7 @@
       $players = [];
       $count = 0;
       foreach($GLOBALS['players'] as $name => $card){
-        if($card->good_games > 10){
+        if($card->games_played > 10){
           $players[$count] = $card;
           $count++;
         }
@@ -121,7 +121,7 @@
 <nav class="nav">
   <form method='get'>
     <button class="nav-btn active" onclick="showpage('players')">💀 Players</button>
-    <button class="nav-btn" onclick="showpage('timeline')">📈 Timeline</button>
+    <!-- <button class="nav-btn" onclick="showpage('timeline')">📈 Timeline</button> -->
   </form>
 </nav>
 

@@ -57,6 +57,8 @@
         public $games_played = 0;
         public $survived = 0;
         public $game_idxs = [];
+        public $roles = [];
+        public $unique_role_count;
 
         public $storyteller_games = 0;
         public $storyteller_good = 0;
