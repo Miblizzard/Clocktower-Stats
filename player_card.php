@@ -209,21 +209,19 @@
                     if(isset($game->player[$this->name])){
                         $req_player = $game->player[$this->name];
                         if($req_player->isalive){
-                            if($req_player->team_won){
-                                switch($req_player->type){
-                                    case 'Townsfolk': $alive_good_wins++;break;
-                                    case 'Outsider':  $alive_good_wins++;break;
-                                    case 'Traveler': 
-                                        if($req_player->isgood){
-                                            $alive_good_wins++;
-                                        }else{
-                                            $alive_evil_wins++;
-                                        }
-                                        break;
-                                    case 'Demon': $alive_evil_wins++;break;
-                                    case 'Minion': $alive_evil_wins++;break;
-                                    default: $unknown++;break;
-                                }
+                            switch($req_player->type){
+                                case 'Townsfolk': $alive_good_wins++;break;
+                                case 'Outsider':  $alive_good_wins++;break;
+                                case 'Traveler': 
+                                    if($req_player->isgood){
+                                        $alive_good_wins++;
+                                    }else{
+                                        $alive_evil_wins++;
+                                    }
+                                    break;
+                                case 'Demon': $alive_evil_wins++;break;
+                                case 'Minion': $alive_evil_wins++;break;
+                                default: $unknown++;break;
                             }
                         }else{
                             switch($req_player->type){
