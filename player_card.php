@@ -110,6 +110,11 @@
             $this->games_won++;
         }
 
+        public function add_role($role){
+            $this->unique_role_count++;
+            $this->roles[$role] = $this->unique_role_count;
+            
+        }
         public function add_game($idx){
             $this->game_idxs[$this->games_played] = $idx; // is an array of indexes that is each associated with a game 
             $this->games_played++;
@@ -411,6 +416,12 @@
                             $card->add_survived();
                         }
 
+                        if(!isset($card->roles[$role_start])){
+                            $card->add_role($role_start);
+                            
+                        }
+                        
+
                         if($is_good){ // if the player in the match is considered good add to their good counter
                             $card->add_good();
                             if($won){ // if that player won then add to their wins
@@ -444,6 +455,9 @@
                         $new_card = new PlayerCard;
                         $GLOBALS['num_players']++;
                         $new_card->set_details($pl->name, $idx);
+
+                        $new_card->add_role($role_start);
+                        
 
                         $new_card->set_color($GLOBALS['colors'][rand(0, $GLOBALS['colors_available'])]);
                         if($is_good){ // if the player in the match is considered good add to their good counter
@@ -534,8 +548,6 @@
         $played_by_role = $card->num_played_by_role();
         
         $towns = $played_by_role[0] == 0 ? '—' : number_format(($won_by_role[0]/$played_by_role[0])*100, 0);
-        //$outsiders = $played_by_role[1] == 0 ? '—' : number_format(($won_by_role[1]/$played_by_role[1])*100, 0);
-        //$travelers = $played_by_role[2] == 0 ? '—' : number_format(($won_by_role[2]/$played_by_role[2])*100, 0);
         $demons = $played_by_role[3] == 0 ? '—' : number_format(($won_by_role[3] / $played_by_role[3])*100, 0);
         $minions = $played_by_role[4] == 0 ? '—' : number_format(($won_by_role[4] / $played_by_role[4])*100, 0);
 
@@ -586,7 +598,7 @@
                         <div class="brows">'.bar('Small ≤ 10',$sml_pct, choose_color('evil')).''.bar('Mid 10–12', $med_pct, choose_color('minion')).''.bar('Large ≥12', $larg_pct, choose_color('good')).'</div>
                         <div class="pills">
                             <span class="pill ps">⚡ '. $card->hws .'W / '. $card->hls .'L streak</span>
-                            <span class="pill ps">☯ '. $played_by_role[0] + $played_by_role[1] + $played_by_role[2] + $played_by_role[3] + $played_by_role[4] + $played_by_role[5] .' roles</span>
+                            <span class="pill ps">☯ '. $card->unique_role_count .' unique roles</span>
                         </div>
                         <button class="view-more" onclick="openModal(\''. $card->name .'\')">CLICK TO VIEW FULL PROFILE & GAME HISTORY</button>
                         </div>
