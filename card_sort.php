@@ -229,15 +229,22 @@ function history($card){
     
 
     $hist_string = '';
-
+    $num_won = 0;
+    $num_played = 0;
     foreach($card->game_idxs as $game_idx){
+        
         $game = $GLOBALS['all_games'][$game_idx];
         $this_player = $game->player[$card->name];
         $isWin = $this_player->team_won ? 'Win' : 'Loss';
+        if($this_player->team_won){
+            $num_won++;
+        }
+        $num_played++;
         $isgood = $this_player->isgood ? 'Good' : 'Evil';
         $dot_color = ($isgood == 'Good')? '#1a6b5a' :  '#8b1a1a';
         $result_col = $isWin == 'Win'?($isgood == 'Good'?'#1a6b5a':'#8b1a1a'):'#7a6e5e';
-        $alive = ($this_player->isalive) ? '● ':'○ ';
+        $alive = ($this_player->isalive) ? '●':'○';
+        $running_win_rate = number_format(($num_won / $num_played)*100, 0);
 
         $hist_string .= '<div class="gh-row">
       <div class="gh-num"></div>
@@ -247,8 +254,8 @@ function history($card){
         <div class="gh-sub">'. $game->script .' '. $game->player_num .'P · Date: '. $game->date .'</div>
       </div>
       <div style="text-align:right;flex-shrink:0">
-        <div class="gh-result" style="color:'. $result_col .'">'. $isWin .' <span style="color:'. ($isgood == 'Good'?'#1a6b5a':'#8b1a1a') .'">'. $isgood .'</span></div>
-        <div class="gh-wr">'. $alive .'Was Alive EOG</div>
+        <div class="gh-result" style="color:'. $result_col .'">'. $isWin .' <span style="color:'. ($isgood == 'Good'?'#1a6b5a':'#8b1a1a') .'">'. $isgood .' · '. $running_win_rate .'% Win Rate</span></div>
+        <div class="gh-wr">'. $alive .' Was Alive EOG</div>
       </div>
     </div>';
     }
