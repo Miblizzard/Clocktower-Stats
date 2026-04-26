@@ -124,11 +124,11 @@
         }
 
         public function percent_good_won(){
-            return ($this->good_won / $this->games_won)*100;
+            return ($this->good_won / $this->good_games)*100;
         }
 
         public function percent_evil_won(){
-            return ($this->evil_won / $this->games_won)*100;
+            return ($this->evil_won / $this->evil_games)*100;
         }
 
         /**
@@ -363,7 +363,7 @@
                     $alive = (strtolower($alive_dead) == "alive");
                     $won = (strtolower($win_loss) == "win");
                     $is_good = (strtolower($team) == "good");
-                    
+                    $good_win = (strtolower($team_win) == "good");
                     if($idx != $prev_idx){
                         $game = new Game();
                         $GLOBALS['num_games']++;
@@ -374,18 +374,18 @@
                         $GLOBALS['all_games'][$idx] = $game; // add the game to the hashmap of games with the key of its index as a string
 
                         if(has_player_card($storyteller)){
-                        $st = $GLOBALS['players'][$storyteller];
-                        $st->storyteller_games++;
-                        if($is_good){
-                            $st->storyteller_good++;
-                        }
+                            $st = $GLOBALS['players'][$storyteller];
+                            $st->storyteller_games++;
+                            if($good_win){
+                                $st->storyteller_good++;
+                            }
                         }else{
                             $new_player = new PlayerCard;
                             $new_player->set_name($storyteller);
                             $GLOBALS['num_players']++;
                             $new_player->storyteller_games++;
                             $GLOBALS['players'][$storyteller] = $new_player;
-                            if($is_good){
+                            if($good_win){
                                 $new_player->storyteller_good++;
                             }
                         }
@@ -573,8 +573,8 @@
                         </div>
                         <div class="cbody">
                         <div class="sgrid">
-                            <div class="sbox"><div class="sbox-l">Good</div><div class="sbox-v" style="color:'. choose_color('good') .'">'. $percent_good .'%</div><div class="sbox-s">'. $card->good_won .'/'. $card->games_won .' games</div></div>
-                            <div class="sbox"><div class="sbox-l">Evil</div><div class="sbox-v" style="color:'. choose_color('evil') .'">'. $percent_evil .'%</div><div class="sbox-s">'. $card->evil_won .'/'. $card->games_won .' games</div></div>
+                            <div class="sbox"><div class="sbox-l">Good</div><div class="sbox-v" style="color:'. choose_color('good') .'">'. $percent_good .'%</div><div class="sbox-s">'. $card->good_won .'/'. $card->good_games .' games</div></div>
+                            <div class="sbox"><div class="sbox-l">Evil</div><div class="sbox-v" style="color:'. choose_color('evil') .'">'. $percent_evil .'%</div><div class="sbox-s">'. $card->evil_won .'/'. $card->evil_games .' games</div></div>
                             <div class="sbox"><div class="sbox-l">Demon</div><div class="sbox-v" style="color:'. choose_color('demon').'">'. $demons .'%</div><div class="sbox-s">'. $won_by_role[3] .'/'. $played_by_role[3] .'</div></div>
                             <div class="sbox"><div class="sbox-l">Minion</div><div class="sbox-v" style="color:'. choose_color('minion') .'">'. $minions .'%</div><div class="sbox-s">'. $won_by_role[4] .'/'. $played_by_role[4] .'</div></div>
                         </div>
