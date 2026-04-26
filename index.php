@@ -343,13 +343,13 @@
           </script>
      
     </div>
-    <div class="tl-controls">
+    <!-- <div class="tl-controls">
       <span class="flbl">Filter</span>
       <button class="tl-filter active" onclick="setTLFilter('all')">All Games</button>
       <button class="tl-filter" onclick="setTLFilter('good')">Good Wins</button>
       <button class="tl-filter" onclick="setTLFilter('evil')">Evil Wins</button>
       <button class="tl-filter" onclick="setTLFilter('notable')">Notable Only</button>
-    </div>
+    </div> -->
     <div class="tl-list" id="tl-list"></div>
   </div>
 </div>
