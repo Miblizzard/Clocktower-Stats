@@ -889,7 +889,7 @@ header::before {
 }
 
 .tl-controls {
-  display: flex;
+  display: block;
   gap: 8px;
   flex-wrap: wrap;
   margin-bottom: 20px;
@@ -927,6 +927,10 @@ header::before {
   padding: 30px;
   margin-bottom: 30px;
   box-shadow: 0 2px 8px var(--sh);
+}
+
+.chart_container{
+  min-height: 370px;
 }
 
 .tl-chart-title {

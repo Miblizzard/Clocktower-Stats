@@ -43,6 +43,65 @@
     return $count;
   }
 
+  $page;
+  if(isset($_GET['page'])){
+    $page = $_GET['page'];
+    if($page == 'players'){//if this is the players screen will need to render the cards to be echoed later
+      $card_string = render_cards();
+    }else{ // if this is the timeline page need to display the row of games with their players and storytellers also need to set up datapoints variable to be used in graph 
+      //
+      //this will be an associative "x" to the day and "y" to the percent good win rate 
+      $data_points1 = [];
+      $good_wins = 0;
+      $games_played = 0;
+      $prev_day = '';
+      $array_index = -1;
+
+      foreach($GLOBALS['all_games'] as $idx => $game){
+        $outcome = $game->good_won;
+        $day = $game->date;
+        $games_played++; // game has been played
+        if($outcome) $good_wins++;
+        $pct_win = ($good_wins / $games_played)*100;
+        
+        // if the previous day is the same as this day
+        // need to overwrite the previous pct_win with a new one 
+        if($day != $prev_day){
+          $array_index++;
+          $data_points1[$array_index] = array("x" => strtotime($day)* 1000, "y" => $pct_win); 
+        }else{
+          $data_points1[$array_index] = array("x" => strtotime($day)* 1000, "y" => $pct_win);
+        }
+        $prev_day = $day;
+      }
+
+
+      //this will be a second associative array with "x" associated with the date and
+      //and "y" associated with the games played
+      $data_points2 = [];
+      $array_index = -1;
+      $games_played = 0;
+      $prev_day = '';
+      foreach($GLOBALS['all_games'] as $idx => $game){
+        
+        $day = $game->date;
+        $games_played++; // game has been played
+        // if the previous day is the same as this day
+        // need to overwrite the previous pct_win with a new one 
+        if($day != $prev_day){
+          $array_index++;
+          $data_points2[$array_index] = array("x" => strtotime($day)* 1000, "y" => $games_played); 
+        }else{
+          $data_points2[$array_index] = array("x" => strtotime($day)* 1000, "y" => $games_played);
+        }
+        $prev_day = $day;
+      }
+    }
+  }else{
+    $page = 'players';
+    $card_string = render_cards();
+  }
+
   function get_good_winrt(){
     return number_format((get_good_wins() / get_games() * 100), 0);
   }
@@ -57,7 +116,7 @@
       <div class="hstat"><span class="hstat-v" style="color:#c0392b">'. get_evil_winrt() .'%</span><span class="hstat-l">Evil Win Rate '. get_evil_wins() .'/'. get_games() .'</span></div>
       <div class="hstat"><span class="hstat-v">'. get_num_players() .'</span><span class="hstat-l">Unique Players</span></div>';
     
-  //if(!isset($_GET['page_contents']) || $_GET['page_contents'] == 'players'){
+  
     function shown_players(){
       $players = [];
       $count = 0;
@@ -69,22 +128,26 @@
       }
       return $players;
     }
-    
-    if(isset($_GET['sort-select'])){
-      $sorted_card_array = set_sort(shown_players(), $_GET['search'], $_GET['sort-select']);
-    }else{
-      $sorted_card_array = set_sort(shown_players(), null, 'games');
+
+    function render_cards(){
+      if(isset($_GET['sort-select'])){
+        $sorted_card_array = set_sort(shown_players(), $_GET['search'], $_GET['sort-select']);
+      }else{
+        $sorted_card_array = set_sort(shown_players(), null, 'games');
+      }
+
+      $card_string = '';
+      if($sorted_card_array != null){
+        foreach($sorted_card_array as $var => $card){
+          $card_string .= create_card($card);
+        }
+      }else{
+        $card_string = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--stone);font-style:italic;font-size:18px">No players found.</div>';
+      }
+
+      return $card_string;
     }
 
-    $card_string = '';
-    if($sorted_card_array != null){
-      foreach($sorted_card_array as $var => $card){
-        $card_string .= create_card($card);
-      }
-    }else{
-      $card_string = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--stone);font-style:italic;font-size:18px">No players found.</div>';
-    }
-  //}
 
 ?>
 <!DOCTYPE html>
@@ -120,11 +183,11 @@
 
 <nav class="nav">
   <form method='get'>
-    <button class="nav-btn active" onclick="showpage('players')">💀 Players</button>
-    <!-- <button class="nav-btn" onclick="showpage('timeline')">📈 Timeline</button> -->
+    <button class="nav-btn <?php if(isset($_GET['page'])){echo ($_GET['page'] == 'players') ? 'active' : '';}?>" value='players' name='page'>💀 Players</button>
+    <button class="nav-btn <?php if(isset($_GET['page'])){echo ($_GET['page'] == 'timeline') ? 'active' : '';}?>" value='timeline' name='page'>📈 Timeline</button>
   </form>
 </nav>
-
+<?php if($page == 'players'):?>
 <!-- PLAYERS PAGE -->
 <div id="page-players" class="page active">
   <form action="index.php" method="get">  
@@ -185,6 +248,7 @@
 
     </div>
   </form>
+  
   <div class="gwrap">
     <div class="rcount" id="rcount"></div>
     <div class="cgrid" id="cgrid">
@@ -195,13 +259,89 @@
   </div>
 </div>
 
-
+<?php elseif ($page == 'timeline'):?>
 <!-- TIMELINE PAGE -->
-<div id="page-timeline" class="page">
+<div id="page-timeline" class="page active">
   <div class="tlwrap">
     <div class="tl-chart-wrap">
-      <div class="tl-chart-title">Good Win Rate — Rolling 10-Game Average</div>
-      <canvas id="tl-chart" height="90"></canvas>
+       <div id="chart_container" style="height: 500px; width: 100%; display:block!important;"></div>
+          <script>  
+            window.addEventListener('load', () =>  {
+                  
+              var chart = new CanvasJS.Chart("chart_container", {
+                animationEnabled: true,
+                theme: "light3",
+                title:{
+                  text: "Good Win % And Games Played Over Time",
+                  fontFamily: "Cinzel",
+                  fontSize: 15
+                },
+                axisX:{
+                  valueFormatString: "DD MMM",
+                  titleFontFamily: "Cinzel",
+                  titleFontSize: 15,
+                  labelFontFamily: "Cinzel",
+                  crosshair: {
+                    enabled: true,
+                    snapToDataPoint: true
+                  }
+                },
+                axisY:{
+                  title: "Win Rate",
+                  titleFontFamily: "Cinzel",
+                  titleFontSize: 15,
+                  labelFontFamily: "Cinzel",
+                  suffix: "%",
+                  maximum: 100,
+                  includeZero: true,
+                  crosshair: {
+                    enabled: true,
+                    snapToDataPoint: true,
+                    labelFontFamily: "Cinzel",
+                    valueFormatString: "##.#'%'"
+                  }
+                },
+                axisY2:{
+                  title: "Games Played",
+                  titleFontFamily: "Cinzel",
+                  titleFontSize: 15,
+                  labelFontFamily: "Cinzel",
+                  crosshair: {
+                    enabled: true,
+                    snapToDataPoint: false,
+                    labelFontFamily: "Cinzel",
+                  }
+                },
+                toolTip:{
+                  enabled: false
+                },
+                legend:{
+                  cursor: "pointer",
+                  fontFamily: "Cinzel",
+                  dockInsidePlotArea: true,
+                },
+                data: [{
+                  type: "area",
+                  name: "Good Win Rate",
+                  titleFontFamily: "Cinzel",
+                  xValueType: "dateTime",
+                  showInLegend: true,
+                  dataPoints: <?php echo json_encode($data_points1, JSON_NUMERIC_CHECK); ?>
+                },{
+                  type: "line",
+                  axisYType: "secondary",
+                  name: "Games Played",
+                  titleFontFamily: "Cinzel",
+                  xValueType: "dateTime",
+                  markerSize: 0,
+                  showInLegend: true,
+                  dataPoints: <?php echo json_encode($data_points2, JSON_NUMERIC_CHECK); ?>
+                }]
+              });
+            chart.render();
+          });
+          </script>
+     
     </div>
     <div class="tl-controls">
       <span class="flbl">Filter</span>
@@ -213,7 +353,7 @@
     <div class="tl-list" id="tl-list"></div>
   </div>
 </div>
-
+<?php endif;?>
 <!-- MODAL -->
 <div class="modal-overlay" id="modal" onclick="closeModal(event)">
   <div class="modal" id="modal-inner">
@@ -228,7 +368,8 @@
 </div>
 
 <footer>Built with ♥ by <span>Anakyn</span> & <span>Lucas (3rd Year)</span> — Storyteller, Stats Keeper & Town Architect &nbsp;·&nbsp; Nov 2025 – Apr 2026</footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script> -->
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 <!-- <script type="module" src="./api.js"></script>
 <script type="module" src="./app.js"></script> -->
 </body>
