@@ -118,6 +118,8 @@ function show_full_card($card){
     
     $evil = $card->evil_games == 0 ? 0 : number_format(($survival[1] / $card->evil_games)*100, 0);
 
+    $survived = $card->games_played == 0 ? '—' : number_format((($survival[0]+$survival[1]) / $card->games_played)*100, 0); 
+
     // in the form [sml, sml_w, med, med_w, larg, larg_w]
     $size = $card->game_size();
 
@@ -161,7 +163,7 @@ function show_full_card($card){
     
     <div class="m2col">
        <div class="mbox"><div class="mbox-l">Overall Win Rate</div><div class="mbox-v" style="color:'. choose_color($card->color) .'">'. number_format($card->percent_games_won(), 0) .'%</div><div class="mbox-s">'. $card->games_won .'W / '. ($card->games_played - $card->games_won) .'L from '. $card->games_played .' games</div></div>
-       <div class="mbox"><div class="mbox-l">Survival Rate</div><div class="mbox-v" style="color:'. choose_color('good') .'">'. ($good + $evil) .'%</div><div class="mbox-s">'. ($survival[0] + $survival[1]) .' alive at EOG / '. ($card->evil_games+$card->good_games) .' tracked</div></div>
+       <div class="mbox"><div class="mbox-l">Survival Rate</div><div class="mbox-v" style="color:'. choose_color('good') .'">'. $survived .'%</div><div class="mbox-s">'. ($survival[0] + $survival[1]) .' alive at EOG / '. ($card->evil_games+$card->good_games) .' tracked</div></div>
        <div class="mbox"><div class="mbox-l">As Good</div><div class="mbox-v" style="color:'. choose_color('good') .'">'. $percent_good .'%</div><div class="mbox-s">'. $card->good_won .'/'. $card->good_games .' games</div></div>
       <div class="mbox"><div class="mbox-l">As Evil</div><div class="mbox-v" style="color:'. choose_color('evil') .'">'. $percent_evil .'%</div><div class="mbox-s">'. $card->evil_won .'/'. $card->evil_games .' games</div></div>
       <div class="mbox"><div class="mbox-l">Demon</div><div class="mbox-v" style="color:'. choose_color('demon') .'">'. $demons .'%</div><div class="mbox-s">'. $won_by_role[3] .'/'. $played_by_role[3] .' games</div></div>
