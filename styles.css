@@ -921,10 +921,11 @@ header::before {
 }
 
 .tl-chart-wrap {
-  background: #fff;
+  background: var(--gold-p);
   border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 24px;
+  max-height: 800px;
+  padding: 30px;
+  margin-bottom: 30px;
   box-shadow: 0 2px 8px var(--sh);
 }
 

@@ -83,7 +83,7 @@ function mbar($label, $color, $pct){
 }
 
 if(isset($_GET['q']) && $_GET['q'] != ''){
-    require 'PlayerCard.php';
+    require 'player_card.php';
     $sheet_data = get_data();
     $sheet = json_decode($sheet_data, true);
     format_data($sheet);
@@ -164,8 +164,8 @@ function show_full_card($card){
        <div class="mbox"><div class="mbox-l">Survival Rate</div><div class="mbox-v" style="color:'. choose_color('good') .'">'. ($good + $evil) .'%</div><div class="mbox-s">'. $survival[0] .' alive at EOG / '. ($card->evil_games+$card->good_games) .' tracked</div></div>
        <div class="mbox"><div class="mbox-l">As Good</div><div class="mbox-v" style="color:'. choose_color('good') .'">'. $percent_good .'%</div><div class="mbox-s">'. $card->good_won .'/'. $card->good_games .' games</div></div>
       <div class="mbox"><div class="mbox-l">As Evil</div><div class="mbox-v" style="color:'. choose_color('evil') .'">'. $percent_evil .'%</div><div class="mbox-s">'. $card->evil_won .'/'. $card->evil_games .' games</div></div>
-      <div class="mbox"><div class="mbox-l">Demon</div><div class="mbox-v" style="color:'. choose_color('demon') .'">'. $demons .'</div><div class="mbox-s">'. $won_by_role[3] .'/'. $played_by_role[3] .' games</div></div>
-      <div class="mbox"><div class="mbox-l">Minion</div><div class="mbox-v" style="color:'. choose_color('minion') .'">'. $minions .'</div><div class="mbox-s">'. $won_by_role[4] .'/'. $played_by_role[4] .' games</div></div>
+      <div class="mbox"><div class="mbox-l">Demon</div><div class="mbox-v" style="color:'. choose_color('demon') .'">'. $demons .'%</div><div class="mbox-s">'. $won_by_role[3] .'/'. $played_by_role[3] .' games</div></div>
+      <div class="mbox"><div class="mbox-l">Minion</div><div class="mbox-v" style="color:'. choose_color('minion') .'">'. $minions .'%</div><div class="mbox-s">'. $won_by_role[4] .'/'. $played_by_role[4] .' games</div></div>
       <div class="mbox"><div class="mbox-l">Best Win Streak</div><div class="mbox-v" style="color:#c9933a">'. $card->hws .'</div><div class="mbox-s">consecutive wins</div></div>
       <div class="mbox"><div class="mbox-l">Worst Loss Streak</div><div class="mbox-v" style="color:#8b1a1a">'. $card->hls .'</div><div class="mbox-s">consecutive losses</div></div>
     </div>
@@ -229,7 +229,7 @@ function history($card){
       <div class="gh-dot" style="background:'. $dot_color .'"></div>
       <div class="gh-info">
         <div class="gh-role">'. $this_player->role_start .' <span style="font-size:9px;color:var(--stone);font-weight:400">('. $this_player->type .')</span></div>
-        <div class="gh-sub">'. $game->script .''. $game->player_num .'P</div>
+        <div class="gh-sub">'. $game->script .' '. $game->player_num .'P · Date: '. $game->date .'</div>
       </div>
       <div style="text-align:right;flex-shrink:0">
         <div class="gh-result" style="color:'. $result_col .'">'. $isWin .' <span style="color:'. ($isgood == 'Good'?'#1a6b5a':'#8b1a1a') .'">'. $isgood .'</span></div>

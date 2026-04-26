@@ -1,5 +1,5 @@
 <?php
-  require 'PlayerCard.php';
+  require 'player_card.php';
   require 'card_sort.php';
   /*
     the sheet_data variable now holds all of the data in the spreadsheet as a json file
@@ -57,33 +57,34 @@
       <div class="hstat"><span class="hstat-v" style="color:#c0392b">'. get_evil_winrt() .'%</span><span class="hstat-l">Evil Win Rate '. get_evil_wins() .'/'. get_games() .'</span></div>
       <div class="hstat"><span class="hstat-v">'. get_num_players() .'</span><span class="hstat-l">Unique Players</span></div>';
     
-  
-  function shown_players(){
-    $players = [];
-    $count = 0;
-    foreach($GLOBALS['players'] as $name => $card){
-      if($card->good_games > 10){
-        $players[$count] = $card;
-        $count++;
+  //if(!isset($_GET['page_contents']) || $_GET['page_contents'] == 'players'){
+    function shown_players(){
+      $players = [];
+      $count = 0;
+      foreach($GLOBALS['players'] as $name => $card){
+        if($card->good_games > 10){
+          $players[$count] = $card;
+          $count++;
+        }
       }
+      return $players;
     }
-    return $players;
-  }
-  
-  if(isset($_GET['sort-select'])){
-    $sorted_card_array = set_sort(shown_players(), $_GET['search'], $_GET['sort-select']);
-  }else{
-    $sorted_card_array = set_sort(shown_players(), null, 'games');
-  }
+    
+    if(isset($_GET['sort-select'])){
+      $sorted_card_array = set_sort(shown_players(), $_GET['search'], $_GET['sort-select']);
+    }else{
+      $sorted_card_array = set_sort(shown_players(), null, 'games');
+    }
 
-  $card_string = '';
-  if($sorted_card_array != null){
-    foreach($sorted_card_array as $var => $card){
-      $card_string .= create_card($card);
+    $card_string = '';
+    if($sorted_card_array != null){
+      foreach($sorted_card_array as $var => $card){
+        $card_string .= create_card($card);
+      }
+    }else{
+      $card_string = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--stone);font-style:italic;font-size:18px">No players found.</div>';
     }
-  }else{
-    $card_string = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--stone);font-style:italic;font-size:18px">No players found.</div>';
-  }
+  //}
 
 ?>
 <!DOCTYPE html>
@@ -118,8 +119,10 @@
 </header>
 
 <nav class="nav">
-  <button class="nav-btn active" onclick="showPage('players')">💀 Players</button>
-  <!-- <button class="nav-btn" onclick="showPage('timeline')">📈 Timeline</button>-->
+  <form method='get'>
+    <button class="nav-btn active" onclick="showpage('players')">💀 Players</button>
+    <button class="nav-btn" onclick="showpage('timeline')">📈 Timeline</button>
+  </form>
 </nav>
 
 <!-- PLAYERS PAGE -->
@@ -171,6 +174,13 @@
             function closeModal(e){if(e.target===document.getElementById('modal'))closeModalDirect();}
             function closeModalDirect(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';}
             document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();});
+            
+            // function showPage(id){
+            //   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+            //   document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',PAGE_KEYS[i]===id));
+            //   $('page-'+id).classList.add('active');
+            //   if(id==='timeline'&&!window._tlBuilt){window._tlBuilt=true;buildTLChart();renderTimeline();}
+            // }
     </script>        
 
     </div>
