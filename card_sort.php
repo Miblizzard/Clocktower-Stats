@@ -16,10 +16,10 @@
                         $var = ($card->games_played == 0) ? 0 : number_format($card->percent_games_won(), 0);
                         break;
                     case 'good':
-                        $var = ($card->games_won == 0) ? 0 : number_format(($card->good_won / $card->games_won)*100, 0);
+                        $var = ($card->games_won == 0) ? 0 : number_format(($card->good_won / $card->good_games)*100, 0);
                         break;
                     case 'evil':
-                        $var = ($card->games_won == 0) ? 0 : number_format(($card->evil_won / $card->games_won)*100, 0);
+                        $var = ($card->games_won == 0) ? 0 : number_format(($card->evil_won / $card->evil_games)*100, 0);
                         break;
                     case 'surv':
                         $var = ($card->games_played == 0) ? 0 : number_format(($card->survived / $card->games_played)*100, 0);
